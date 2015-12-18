@@ -1,0 +1,8 @@
+{
+    "update": "true",
+    "disk_size": "204800",
+    "vm_name": "pocci",
+    "hostname": "pocci",
+    "vagrantfile_template": "bocci/vagrantfile.tpl",
+    "version": "BOX_VERSION"
+}
