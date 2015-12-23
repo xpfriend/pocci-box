@@ -9,5 +9,6 @@ if [ -f /vagrant/environment.sh ]; then
 fi
 
 ./setup-timezone.sh
+./setup-redmine_lang.sh
 ./setup-proxy.sh
 ./setup-pocci.sh

@@ -1,9 +1,14 @@
 #!/bin/bash
 set -ex
 
-if [ -z "${timezone}" ]; then
-    exit
-fi
+export TIMEZONE="${timezone:-Etc/UTC}"
 
-timedatectl set-timezone "${timezone}"
+timedatectl set-timezone "${TIMEZONE}"
 initctl restart cron
+
+sudo -u vagrant -E /bin/bash <<'EOF'
+set -ex
+for i in /home/vagrant/pocci/template/*.yml; do
+    sed -E "s|TZ:.*$|TZ: ${TIMEZONE}|g" -i $i
+done
+EOF

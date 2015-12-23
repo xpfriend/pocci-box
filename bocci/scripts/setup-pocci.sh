@@ -20,5 +20,7 @@ else
 fi
 EOF
 
-mv /etc/init/pocci /etc/init/pocci.conf
-initctl reload-configuration
+if [ -f /etc/init/pocci ]; then
+    mv /etc/init/pocci /etc/init/pocci.conf
+    initctl reload-configuration
+fi

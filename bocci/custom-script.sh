@@ -30,7 +30,7 @@ BUILD
 cat << EOF >/etc/init/pocci
 description "Pocci"
 start on started docker
-stop on runlevel [!2345]
+stop on stopping docker
 kill timeout 120
 exec sudo -u ${SSH_USERNAME} -E -i /bin/bash /home/${SSH_USERNAME}/scripts/start
 EOF

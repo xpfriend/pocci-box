@@ -48,7 +48,7 @@ pocci-box
 
 デフォルトの Vagrantfile
 ------------------------
-デフォルトの Vagrantfile では以下の設定になっています。
+デフォルトの Vagrantfile は以下の設定になっています。
 
 ```ruby
 Vagrant.configure("2") do |config|
@@ -66,6 +66,7 @@ Vagrant.configure("2") do |config|
         v.customize ["modifyvm", :id, "--cpus", 2]
     end
 
+    config.vm.graceful_halt_timeout = 120
     config.vm.provision "shell", inline: "/usr/bin/sudo /root/scripts/setup.sh"
 end
 ```
@@ -83,6 +84,8 @@ rsync_proxy     | rsync利用時のプロキシサーバURL  | http_proxyに設�
 no_proxy        | プロキシを経由せずに接続するホストの名前またはアドレス。カンマ区切りで複数指定可 | 127.0.0.1,localhost | export no_proxy="127.0.0.1,localhost,my-server"
 timezone        | タイムゾーン                    | Etc/UTC                  | export timezone=Asia/Tokyo
 service_type    | サービス構成タイプ              | default                  | export service_type=redmine
+redmine_lang    | Redmineの言語設定で使用する言語 | en                       | export redmine_lang=ja
+
 
 ### service_type  (サービス構成タイプ) の設定について
 *   service_type を指定しない、もしくは default を指定した場合:  
