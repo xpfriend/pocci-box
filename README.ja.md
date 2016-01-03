@@ -90,13 +90,13 @@ redmine_lang    | Redmineの言語設定で使用する言語 | en              
 ### service_type  (サービス構成タイプ) の設定について
 *   service_type を指定しない、もしくは default を指定した場合:  
     初回起動時に `~/pocci/bin/create-config default;~/pocci/bin/up-service` が実行されます。
-*   service_type に gitlab を指定した場合:  
-    初回起動時に `~/pocci/bin/create-config gitlab;~/pocci/bin/up-service` が実行されます。
+*   service_type に jenkins を指定した場合:  
+    初回起動時に `~/pocci/bin/create-config jenkins;~/pocci/bin/up-service` が実行されます。
 *   service_type に redmine を指定した場合:  
     初回起動時に `~/pocci/bin/create-config redmine;~/pocci/bin/up-service` が実行されます。
-*   service_type に default / gitlab / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成した場合:  
+*   service_type に default / jenkins / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成した場合:  
     初回起動時に `~/pocci/bin/create-config [サービス構成タイプ];~/pocci/bin/up-service` が実行されます。
-*   service_type に default / gitlab / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成しなかった場合:  
+*   service_type に default / jenkins / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成しなかった場合:  
     `create-config` や `up-service` は実行されません。VM 起動後に `setup.[サービス構成タイプ].yml` を編集し、
     手動で `create-config [サービス構成タイプ]`, `up-service` コマンドを実行してください。
 
