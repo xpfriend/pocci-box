@@ -1,0 +1,8 @@
+#!/bin/bash
+. $(dirname $0)/init-env
+${POCCI_DIR}/bin/up-service
+
+trap "${POCCI_DIR}/bin/stop-service;exit" TERM
+while :;do
+    sleep 1
+done

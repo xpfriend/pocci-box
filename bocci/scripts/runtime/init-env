@@ -1,0 +1,2 @@
+. /etc/profile.d/pocci.sh
+. /etc/profile.d/proxy.sh

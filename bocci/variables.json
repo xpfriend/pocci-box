@@ -1,8 +1,11 @@
 {
     "update": "true",
-    "disk_size": "204800",
+    "disk_size": "59392",
     "vm_name": "pocci",
     "hostname": "pocci",
+    "ssh_fullname": "pocci",
+    "ssh_username": "pocci",
+    "ssh_password": "pocci",
     "vagrantfile_template": "bocci/vagrantfile.tpl",
     "version": "BOX_VERSION"
 }

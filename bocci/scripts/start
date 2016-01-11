@@ -1,8 +1,0 @@
-#!/bin/bash
-source ~/.bashrc
-~/pocci/bin/up-service
-
-trap '~/pocci/bin/stop-service;exit' TERM
-while :;do
-    sleep 1
-done

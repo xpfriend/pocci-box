@@ -5,6 +5,12 @@ pocci-box
 
 [English](./README.md)
 
+必須環境
+--------
+*   起動するVMに4GB以上割り当て可能な空きメモリをもつマシン
+*   VirtualBox
+*   Vagrant
+
 使い方
 ------
 1.  Vagrantfile を作成する:
@@ -53,6 +59,9 @@ pocci-box
 ```ruby
 Vagrant.configure("2") do |config|
     config.vm.box = "xpfriend/pocci"
+    config.ssh.username = "pocci"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.synced_folder ".", "/user_data"
 
     config.vm.network "forwarded_port", guest: 22, host: 22, id: "ssh"
     config.vm.network "forwarded_port", guest: 80, host: 80, id: "http"
@@ -84,18 +93,17 @@ rsync_proxy     | rsync利用時のプロキシサーバURL  | http_proxyに設�
 no_proxy        | プロキシを経由せずに接続するホストの名前またはアドレス。カンマ区切りで複数指定可 | 127.0.0.1,localhost | export no_proxy="127.0.0.1,localhost,my-server"
 timezone        | タイムゾーン                    | Etc/UTC                  | export timezone=Asia/Tokyo
 service_type    | サービス構成タイプ              | default                  | export service_type=redmine
-redmine_lang    | Redmineの言語設定で使用する言語 | en                       | export redmine_lang=ja
 
 
 ### service_type  (サービス構成タイプ) の設定について
 *   service_type を指定しない、もしくは default を指定した場合:  
-    初回起動時に `~/pocci/bin/create-config default;~/pocci/bin/up-service` が実行されます。
+    初回起動時に `${POCCI_DIR}/bin/create-config default;${POCCI_DIR}/bin/up-service` が実行されます。
 *   service_type に jenkins を指定した場合:  
-    初回起動時に `~/pocci/bin/create-config jenkins;~/pocci/bin/up-service` が実行されます。
+    初回起動時に `${POCCI_DIR}/bin/create-config jenkins;${POCCI_DIR}/bin/up-service` が実行されます。
 *   service_type に redmine を指定した場合:  
-    初回起動時に `~/pocci/bin/create-config redmine;~/pocci/bin/up-service` が実行されます。
+    初回起動時に `${POCCI_DIR}/bin/create-config redmine;${POCCI_DIR}/bin/up-service` が実行されます。
 *   service_type に default / jenkins / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成した場合:  
-    初回起動時に `~/pocci/bin/create-config [サービス構成タイプ];~/pocci/bin/up-service` が実行されます。
+    初回起動時に `${POCCI_DIR}/bin/create-config [サービス構成タイプ];${POCCI_DIR}/bin/up-service` が実行されます。
 *   service_type に default / jenkins / redmine 以外を指定し、Vagrantfile と同じディレクトリに `setup.[サービス構成タイプ].yml` ファイルを作成しなかった場合:  
     `create-config` や `up-service` は実行されません。VM 起動後に `setup.[サービス構成タイプ].yml` を編集し、
     手動で `create-config [サービス構成タイプ]`, `up-service` コマンドを実行してください。
@@ -111,19 +119,22 @@ redmine_lang    | Redmineの言語設定で使用する言語 | en              
     [Boxcutter](https://github.com/boxcutter/ubuntu) を用いて作成しています。
 
 ### ユーザーアカウント
-*   **ユーザー:** vagrant
-*   **パスワード:** vagrant
+*   **ユーザー:** pocci
+*   **パスワード:** pocci
 
 ### ディレクトリ
 ```
-/home/vagrant/
-  - pocci/      ... Pocci
-  - scripts/    ... スクリプト
+/
+  - user_data/      ... Vagrant 共有フォルダ (Synced Folder)
+  - opt/
+    - pocci-box/
+      - pocci/      ... ${POCCI_DIR} (Pocci本体)
+      - scripts/    ... ${RUNTIME_SCRIPTS_DIR} (運用スクリプト)
 ```
 
 ### 自動起動
-**/home/vagrant/scripts/start** が
+**${RUNTIME_SCRIPTS_DIR}/start** が
 pocci サービスとしてOS起動時に自動起動します。  
-/home/vagrant/scripts/start
-は **/home/vagrant/pocci/bin/up-service**
+${RUNTIME_SCRIPTS_DIR}/start
+は **${POCCI_DIR}/bin/up-service**
 を呼び出しています。
