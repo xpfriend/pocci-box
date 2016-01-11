@@ -14,4 +14,5 @@ fi
 ./setup-timezone.sh
 ./setup-redmine_lang.sh
 ./setup-proxy.sh
+./setup-postfix.sh
 ./setup-pocci.sh

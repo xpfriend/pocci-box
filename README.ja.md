@@ -92,6 +92,8 @@ ftp_proxy       | ftp利用時のプロキシサーバURL    | http_proxyに設�
 rsync_proxy     | rsync利用時のプロキシサーバURL  | http_proxyに設定された値 | export rsync_proxy=http://proxy.example.com:8080/
 no_proxy        | プロキシを経由せずに接続するホストの名前またはアドレス。カンマ区切りで複数指定可 | 127.0.0.1,localhost | export no_proxy="127.0.0.1,localhost,my-server"
 timezone        | タイムゾーン                    | Etc/UTC                  | export timezone=Asia/Tokyo
+smtp_relayhost  | メール送信先(Postfix設定)       | なし                     | export smtp_relayhost=[smtp.example.com]:587
+smtp_password   | SMTP認証情報(Postfix設定)       | なし                     | export smtp_password=user:password
 service_type    | サービス構成タイプ              | default                  | export service_type=redmine
 
 
