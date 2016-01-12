@@ -4,6 +4,12 @@ set -ex
 MAIN_CF=/etc/postfix/main.cf
 PASSWORD_FILE=/etc/postfix/smtp_password
 
+if [ -f ${MAIN_CF}.backup ]; then
+    cp ${MAIN_CF}.backup ${MAIN_CF}
+else
+    cp ${MAIN_CF} ${MAIN_CF}.backup
+fi
+
 sed -E 's|(mynetworks = 127.0.0.0/8 \[::ffff:127.0.0.0\]/104 \[::1\]/128)(.*)|\1 172.17.0.0/16|' -i ${MAIN_CF}
 
 if [ -n "${smtp_relayhost}" ]; then

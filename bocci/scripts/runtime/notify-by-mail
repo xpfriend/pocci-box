@@ -1,0 +1,30 @@
+#!/bin/bash
+set -ex
+
+if [ ${MESSAGE_LEVEL} -eq 0 ]; then
+    exit 0
+fi
+
+FILE_PATH=/tmp/`uuidgen`.txt
+
+if [ -n "${ADMIN_MAIL_ADDRESS}" ]; then
+    RECIPIENT=${ADMIN_MAIL_ADDRESS}
+else
+    RECIPIENT=${POCCI_USER}
+fi
+
+MESSAGE_LEVEL_TEXT=Warning
+if [ ${MESSAGE_LEVEL} -gt 1 ]; then
+    MESSAGE_LEVEL_TEXT=Error
+fi
+
+echo "Subject: [`hostname`] ${MESSAGE_LEVEL_TEXT}: ${MESSAGE_TYPE}" >${FILE_PATH}
+echo "To: ${RECIPIENT}" >>${FILE_PATH}
+if [ -n "${ALERT_MAIL_FROM}" ]; then
+    echo "From: ${ALERT_MAIL_FROM}" >>${FILE_PATH}
+fi
+echo "" >>${FILE_PATH}
+echo "${MESSAGE}" >>${FILE_PATH}
+
+cat ${FILE_PATH} | sendmail ${RECIPIENT}
+rm -f ${FILE_PATH}

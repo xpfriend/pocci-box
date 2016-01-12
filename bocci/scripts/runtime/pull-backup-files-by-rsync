@@ -1,0 +1,6 @@
+#!/bin/bash
+set -ex
+. $(dirname $0)/init-env
+
+rsync -av ${BACKUP_SERVER_USER}@${BACKUP_SERVER}:${BACKUP_SERVER_DIR}/ ${BACKUP_DIR}
+echo "Done"

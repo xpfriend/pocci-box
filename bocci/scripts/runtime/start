@@ -1,6 +1,7 @@
 #!/bin/bash
 . $(dirname $0)/init-env
 ${POCCI_DIR}/bin/up-service
+${ON_STARTUP_FINISHED}
 
 trap "${POCCI_DIR}/bin/stop-service;exit" TERM
 while :;do

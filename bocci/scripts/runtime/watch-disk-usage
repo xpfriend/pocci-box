@@ -1,0 +1,13 @@
+#!/bin/bash
+set -ex
+. $(dirname $0)/init-env
+
+DISK_USAGE=$(df |grep vg-root |awk '{print $5}' |sed 's/%//')
+
+if [ "${DISK_USAGE}" -ge "90" ]; then
+  MESSAGE_LEVEL=1
+else
+  MESSAGE_LEVEL=0
+fi
+
+${RUNTIME_SCRIPTS_DIR}/notify "pocci.diskUsage" "${MESSAGE_LEVEL}" "Disk Usage: ${DISK_USAGE}%"

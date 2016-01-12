@@ -1,0 +1,15 @@
+#!/bin/bash
+set -x
+. $(dirname $0)/init-env
+
+DOCKER_STATUS="`docker ps -a |grep Exit`"
+
+if  [ -z "${DOCKER_STATUS}" ]; then
+  MESSAGE_LEVEL=0
+  MESSAGE="OK"
+else
+  MESSAGE_LEVEL=2
+  MESSAGE="Exit: "`docker ps -a |grep Exit |awk '{printf "%s ", $NF}'`
+fi
+
+${RUNTIME_SCRIPTS_DIR}/notify "pocci.dockerProcessDowned" "${MESSAGE_LEVEL}" "${MESSAGE}"

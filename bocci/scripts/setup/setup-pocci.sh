@@ -11,7 +11,7 @@ fi
 
 cd ${POCCI_DIR}/bin
 if [ -f ${POCCI_DIR}/template/setup.${SERVICE_TYPE}.yml ]; then
-    ./create-config ${SERVICE_TYPE}
+    echo 'y' | ./create-config ${SERVICE_TYPE}
     ./up-service
 else
     cp ${POCCI_DIR}/template/setup.default.yml ${POCCI_DIR}/template/setup.${SERVICE_TYPE}.yml

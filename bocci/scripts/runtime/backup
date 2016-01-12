@@ -1,0 +1,31 @@
+#!/bin/bash
+echo "-------------------"
+echo `date +"%Y-%m-%d %H:%M:%S"`
+echo "-------------------"
+
+set -ex
+. $(dirname $0)/init-env
+
+DAILY=$1
+BACKUP_NUM=${DAILY_BACKUP_NUM}
+
+cd ${POCCI_DIR}/bin
+./backup
+
+cd ${POCCI_DIR}/backup
+LAST_BACKUP=`ls -t |head -1`
+tar cvfz ${LAST_BACKUP}.tar.gz ${LAST_BACKUP}/
+rm -fr ${LAST_BACKUP}/
+
+if [ "${DAILY}" = "daily" ]; then
+  mv ${LAST_BACKUP}.tar.gz ${BACKUP_DIR}/daily
+  cd ${BACKUP_DIR}/daily
+  if [ $(ls|wc -l) -gt ${BACKUP_NUM} ];then
+      ls -tr |head -$((`ls|wc -l`-${BACKUP_NUM})) |xargs rm -f
+  fi
+  rm -fr ${BACKUP_DIR}/timely/*
+else
+  mv ${LAST_BACKUP}.tar.gz ${BACKUP_DIR}/timely
+fi
+
+${RUNTIME_SCRIPTS_DIR}/push-backup-files

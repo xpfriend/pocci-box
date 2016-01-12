@@ -1,0 +1,15 @@
+#!/bin/bash
+. $(dirname $0)/init-env
+
+${RUNTIME_SCRIPTS_DIR}/backup $1 >> ${BACKUP_DIR}/backup.log 2>&1
+
+EXIT_CODE=$?
+if [ ${EXIT_CODE} -ne 0 ]; then
+  MESSAGE_LEVEL=2
+  MESSAGE="Backup Error: ${EXIT_CODE}. See ${BACKUP_DIR}/backup.log"
+else
+  MESSAGE_LEVEL=0
+  MESSAGE="Backup OK"
+fi
+
+${RUNTIME_SCRIPTS_DIR}/notify "pocci.backup" "${MESSAGE_LEVEL}" "${MESSAGE}"

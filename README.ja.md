@@ -94,6 +94,17 @@ no_proxy        | プロキシを経由せずに接続するホストの名前�
 timezone        | タイムゾーン                    | Etc/UTC                  | export timezone=Asia/Tokyo
 smtp_relayhost  | メール送信先(Postfix設定)       | なし                     | export smtp_relayhost=[smtp.example.com]:587
 smtp_password   | SMTP認証情報(Postfix設定)       | なし                     | export smtp_password=user:password
+admin_mail_address | システム管理者メールアドレス | pocci@localhost.localdomain | export admin_mail_address=admin@example.com
+alert_mail_from | アラート通知メールのFrom        | admin_mail_addressの値   | export alert_mail_from=pocci@example.com
+daily_backup_num | デイリーバックアップの保持数   | 2                        | export daily_backup_num=7
+daily_backup_hour | デイリーバックアップの起動時間(0-23) | 0                 | export daily_backup_hour=1
+timely_backup_hour | 時間指定バックアップの起動時間(0-23)。カンマ区切りで複数指定可能 | 10,12,18 | export timely_backup_hour=2,19
+backup_type | リモートバックアップのタイプ | なし | export backup_type=rsync
+backup_server | バックアップ先サーバ。backup_type=rsyncを指定した場合に設定する | なし | export backup_server=backup.example.com
+backup_server_user | バックアップ先サーバへのログインユーザー。backup_type=rsyncを指定した場合に設定する | なし | export backup_server_user=user01
+backup_server_dir | バックアップ先サーバ上のバックアップデータ格納先ディレクトリ。backup_type=rsyncを指定した場合に設定する | なし | export backup_server_dir=/work/backup
+on_provisioning_finished | 初期設定完了直後に実行するコマンド | なし         | export on_provisioning_finished="echo OK"
+on_startup_finished | Pocciサービス起動直後に実行するコマンド | "echo Done"  | export on_startup_finished="echo Started"
 service_type    | サービス構成タイプ              | default                  | export service_type=redmine
 
 
@@ -132,6 +143,7 @@ service_type    | サービス構成タイプ              | default            
     - pocci-box/
       - pocci/      ... ${POCCI_DIR} (Pocci本体)
       - scripts/    ... ${RUNTIME_SCRIPTS_DIR} (運用スクリプト)
+      - backup/     ... ${BACKUP_DIR} (バックアップデータ格納先)
 ```
 
 ### 自動起動

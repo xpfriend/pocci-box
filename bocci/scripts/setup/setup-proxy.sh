@@ -1,8 +1,11 @@
 #!/bin/bash
 set -ex
 
+sed -E '/^export.*proxy/d' -i /etc/default/docker
+
 if [ -z "${http_proxy}" ]; then
     >/etc/profile.d/proxy.sh
+    service docker restart
     exit
 fi
 
@@ -22,11 +25,11 @@ if [ -z "${no_proxy}" ]; then
     no_proxy="127.0.0.1,localhost"
 fi
 
-echo "export http_proxy=${http_proxy}" >/etc/profile.d/proxy.sh
-echo "export https_proxy=${https_proxy}" >>/etc/profile.d/proxy.sh
-echo "export ftp_proxy=${ftp_proxy}" >>/etc/profile.d/proxy.sh
-echo "export rsync_proxy=${rsync_proxy}" >>/etc/profile.d/proxy.sh
-echo "export no_proxy=${no_proxy}" >>/etc/profile.d/proxy.sh
+echo 'export http_proxy="'${http_proxy}'"' >/etc/profile.d/proxy.sh
+echo 'export https_proxy="'${https_proxy}'"' >>/etc/profile.d/proxy.sh
+echo 'export ftp_proxy="'${ftp_proxy}'"' >>/etc/profile.d/proxy.sh
+echo 'export rsync_proxy="'${rsync_proxy}'"' >>/etc/profile.d/proxy.sh
+echo 'export no_proxy="'${no_proxy}'"' >>/etc/profile.d/proxy.sh
 
 cat /etc/profile.d/proxy.sh >>/etc/default/docker
 service docker restart

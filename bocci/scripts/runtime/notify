@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eux
+
+export MESSAGE_TYPE=$1
+export MESSAGE_LEVEL=$2
+export MESSAGE=$3
+
+${RUNTIME_SCRIPTS_DIR}/notify-by-${NOTIFIER}
