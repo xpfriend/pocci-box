@@ -10,7 +10,8 @@ else
     cp ${MAIN_CF} ${MAIN_CF}.backup
 fi
 
-sed -E 's|(mynetworks = 127.0.0.0/8 \[::ffff:127.0.0.0\]/104 \[::1\]/128)(.*)|\1 172.17.0.0/16|' -i ${MAIN_CF}
+sed -E 's|^mynetworks.+$|\0 172.17.0.0/16|' -i ${MAIN_CF}
+sed -E 's|^mydestination.+$|\0, example.com, example.net|' -i ${MAIN_CF}
 
 if [ -n "${smtp_relayhost}" ]; then
     sed -E "s|(relayhost =)(.*)|\1 ${smtp_relayhost}|" -i ${MAIN_CF}
@@ -29,3 +30,34 @@ if [ -n "${smtp_relayhost}" ]; then
 fi
 
 /etc/init.d/postfix reload
+
+ADMIN_MAIL_ADDRESS=${admin_mail_address}
+if [ -z "${ADMIN_MAIL_ADDRESS}" ]; then
+    ADMIN_MAIL_ADDRESS=${POCCI_USER}@localhost.localdomain
+fi
+export ADMIN_MAIL_ADDRESS
+echo 'export ADMIN_MAIL_ADDRESS="'${ADMIN_MAIL_ADDRESS}'"' >>/etc/profile.d/pocci.sh
+
+ALIASES=/etc/aliases
+if [ -f ${ALIASES}.backup ]; then
+    cp ${ALIASES}.backup ${ALIASES}
+else
+    cp ${ALIASES} ${ALIASES}.backup
+fi
+echo "admin: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
+echo "boze: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
+echo "jenkinsci: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
+newaliases
+
+ALERT_MAIL_FROM=${alert_mail_from}
+if [ -z "${ALERT_MAIL_FROM}" ]; then
+    ALERT_MAIL_FROM=${ADMIN_MAIL_ADDRESS}
+fi
+echo 'export ALERT_MAIL_FROM="'${ALERT_MAIL_FROM}'"' >>/etc/profile.d/pocci.sh
+
+sudo -u ${POCCI_USER} -E /bin/bash <<'EOF'
+set -ex
+for i in ${POCCI_DIR}/template/*.yml; do
+    sed -E "s|adminMailAddress:.*$|adminMailAddress: ${ADMIN_MAIL_ADDRESS}|g" -i $i
+done
+EOF

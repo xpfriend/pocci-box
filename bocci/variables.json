@@ -1,5 +1,6 @@
 {
     "update": "true",
+    "cpus": "2",
     "disk_size": "61440",
     "vm_name": "pocci",
     "hostname": "pocci",

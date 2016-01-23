@@ -31,5 +31,5 @@ echo 'export ftp_proxy="'${ftp_proxy}'"' >>/etc/profile.d/proxy.sh
 echo 'export rsync_proxy="'${rsync_proxy}'"' >>/etc/profile.d/proxy.sh
 echo 'export no_proxy="'${no_proxy}'"' >>/etc/profile.d/proxy.sh
 
-cat /etc/profile.d/proxy.sh >>/etc/default/docker
+echo '. /etc/profile.d/proxy.sh' >>/etc/default/docker
 service docker restart

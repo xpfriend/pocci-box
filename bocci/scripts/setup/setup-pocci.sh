@@ -2,21 +2,14 @@
 set -ex
 
 export SERVICE_TYPE="${service_type:-default}"
+export POCCI_TEMPLATE="${template:-template}"
+echo 'export POCCI_TEMPLATE="'${POCCI_TEMPLATE}'"' >>/etc/profile.d/pocci.sh
 
 sudo -u ${POCCI_USER} -E -i bash <<EOF
 set -ex
-if [ -f /user_data/setup.${SERVICE_TYPE}.yml ]; then
-    cp /user_data/setup.${SERVICE_TYPE}.yml ${POCCI_DIR}/template
-fi
-
 cd ${POCCI_DIR}/bin
-if [ -f ${POCCI_DIR}/template/setup.${SERVICE_TYPE}.yml ]; then
-    echo 'y' | ./create-config ${SERVICE_TYPE}
-    ./up-service
-else
-    cp ${POCCI_DIR}/template/setup.default.yml ${POCCI_DIR}/template/setup.${SERVICE_TYPE}.yml
-    ./lib/start-document-server
-fi
+echo 'y' | ./create-config ${SERVICE_TYPE}
+./up-service
 EOF
 
 if [ -f /etc/init/pocci ]; then
