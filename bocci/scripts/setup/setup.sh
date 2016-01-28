@@ -25,4 +25,5 @@ fi
 ./setup-postfix.sh
 ./setup-pocci.sh
 ./setup-crontab.sh
+./setup-ntp.sh
 ./setup-hooks.sh

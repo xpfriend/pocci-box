@@ -1,3 +1,4 @@
+Encoding.default_external = Encoding::UTF_8
 require 'spec_helper'
 
 describe 'common' do
@@ -24,18 +25,12 @@ context 'proxy' do
 end
 
 context 'backup' do
-  context 'runtime scripts' do
-    describe command('diff /opt/pocci-box/scripts/pull-backup-files-by-pretender /opt/pocci-box/scripts/pull-backup-files |wc -l') do
-      its(:stdout) { should match /^0$/ }
-    end
-    describe command('diff /opt/pocci-box/scripts/push-backup-files-by-pretender /opt/pocci-box/scripts/push-backup-files |wc -l') do
-      its(:stdout) { should match /^0$/ }
-    end
-  end
-
   context 'login shell' do
     describe command('echo $DAILY_BACKUP_NUM') do
       its(:stdout) { should match /^2$/ }
+    end
+    describe command('echo $BACKUP_TYPE') do
+      its(:stdout) { should match /^pretender$/ }
     end
     describe command('echo $BACKUP_SERVER') do
       its(:stdout) { should match /^$/ }

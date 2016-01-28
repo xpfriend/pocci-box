@@ -1,0 +1,5 @@
+#!/bin/bash
+set -ex
+. $(dirname $0)/init-env
+. ${RUNTIME_SCRIPTS_DIR}/pull-backup-files-by-${BACKUP_TYPE}
+echo "Done"

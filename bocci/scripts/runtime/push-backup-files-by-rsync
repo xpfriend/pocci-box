@@ -1,5 +1,8 @@
-#!/bin/bash
-set -ex
-. $(dirname $0)/init-env
-
-rsync -av --delete ${BACKUP_DIR}/ ${BACKUP_SERVER_USER}@${BACKUP_SERVER}:${BACKUP_SERVER_DIR}
+TARGET=${BACKUP_SERVER_DIR}
+if [ -n "${BACKUP_SERVER}" ]; then
+    TARGET="${BACKUP_SERVER}:${TARGET}"
+fi
+if [ -n "${BACKUP_SERVER_USER}" ]; then
+    TARGET="${BACKUP_SERVER_USER}@${TARGET}"
+fi
+rsync -av --delete ${BACKUP_DIR}/ ${TARGET}

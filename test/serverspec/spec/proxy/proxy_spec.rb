@@ -1,6 +1,8 @@
 #
 # environment.sh
 # --------------------------------------------------------------------
+# export ntp_server="ntp.nict.jp"
+#
 # export http_proxy=http://proxy.http.example.com/
 # export https_proxy=http://proxy.https.example.com/
 # export ftp_proxy=http://proxy.ftp.example.com/
@@ -9,6 +11,8 @@
 #
 # export admin_mail_address=pocci@example.com
 # export service_type=/user_data/setup.jo.yml
+#
+# export daily_backup_hour=-
 # --------------------------------------------------------------------
 #
 # setup.jo.yml
@@ -20,9 +24,17 @@
 #   environment:
 #     TZ: Asia/Tokyo
 #
-
-
+Encoding.default_external = Encoding::UTF_8
 require 'spec_helper'
+
+context 'ntp' do
+    describe command('grep -E "^server" /etc/ntp.conf | wc -l') do
+      its(:stdout) { should match /^1$/ }
+    end
+    describe command('grep -E "^server ntp.nict.jp" /etc/ntp.conf | wc -l') do
+      its(:stdout) { should match /^1$/ }
+    end
+end
 
 context 'proxy' do
   context 'login shell' do
@@ -151,3 +163,14 @@ context 'service type' do
   end
 end
 
+context 'backup' do
+  context 'crontab' do
+    describe cron do
+      it { should have_entry('0 10,12,18 * * * /opt/pocci-box/scripts/do-backup').with_user('pocci') }
+    end
+    describe command('crontab -l | grep -E "^#0 0 " | wc -l') do
+      let(:disable_sudo) { true }
+      its(:stdout) { should match /^1$/ }
+    end
+  end
+end

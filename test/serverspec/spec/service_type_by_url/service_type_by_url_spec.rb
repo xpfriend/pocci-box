@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------
 # export service_type=https://raw.githubusercontent.com/xpfriend/pocci/master/template/setup.jenkins.yml
 # --------------------------------------------------------------------
-
+Encoding.default_external = Encoding::UTF_8
 require 'spec_helper'
 
 describe 'common' do

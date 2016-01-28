@@ -59,6 +59,7 @@ BACKUP_DIR          | /opt/pocci-box/backup
 POCCI_USER          | pocci
 NOTIFIER            | mail
 DAILY_BACKUP_NUM    | environment.sh の daily_backup_num
+BACKUP_TYPE         | environment.sh の backup_type
 BACKUP_SERVER       | environment.sh の backup_server
 BACKUP_SERVER_USER  | environment.sh の backup_server_user
 BACKUP_SERVER_DIR   | environment.sh の backup_server_dir

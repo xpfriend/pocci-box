@@ -2,6 +2,7 @@
 # environment.sh
 # --------------------------------------------------------------------
 # export timezone=Asia/Tokyo
+# export ntp_server="ntp.nict.jp ntp.ubuntu.com"
 #
 # export smtp_relayhost=ENV['smtp_relayhost']
 # export smtp_password=ENV['smtp_password']
@@ -22,7 +23,7 @@
 # export on_startup_finished="echo staaaaarted!!"
 # export on_provisioning_finished="echo OK OK OK..."
 # --------------------------------------------------------------------
-
+Encoding.default_external = Encoding::UTF_8
 require 'spec_helper'
 
 describe 'common' do
@@ -40,6 +41,18 @@ context 'timezone' do
   end
 end
 
+context 'ntp' do
+    describe command('grep -E "^server" /etc/ntp.conf | wc -l') do
+      its(:stdout) { should match /^2$/ }
+    end
+    describe command('grep -E "^server ntp.nict.jp" /etc/ntp.conf | wc -l') do
+      its(:stdout) { should match /^1$/ }
+    end
+    describe command('grep -E "^server ntp.ubuntu.com" /etc/ntp.conf | wc -l') do
+      its(:stdout) { should match /^1$/ }
+    end
+end
+
 context 'proxy' do
   context 'login shell' do
     describe file('/etc/profile.d/proxy.sh') do
@@ -49,18 +62,12 @@ context 'proxy' do
 end
 
 context 'backup' do
-  context 'runtime scripts' do
-    describe command('diff /opt/pocci-box/scripts/pull-backup-files-by-rsync /opt/pocci-box/scripts/pull-backup-files |wc -l') do
-      its(:stdout) { should match /^0$/ }
-    end
-    describe command('diff /opt/pocci-box/scripts/push-backup-files-by-rsync /opt/pocci-box/scripts/push-backup-files |wc -l') do
-      its(:stdout) { should match /^0$/ }
-    end
-  end
-
   context 'login shell' do
     describe command('echo $DAILY_BACKUP_NUM') do
       its(:stdout) { should match /^3$/ }
+    end
+    describe command('echo $BACKUP_TYPE') do
+      its(:stdout) { should match /^rsync$/ }
     end
     describe command('echo $BACKUP_SERVER') do
       its(:stdout) { should match /^localhost$/ }
@@ -148,7 +155,7 @@ context 'mail' do
   context 'spool' do
     describe command('mail -H') do
       let(:disable_sudo) { true }
-      its(:stderr) { should match /^mail: No applicable messages$/ }
+      its(:stdout) { should match /^No mail for pocci$/ }
     end
   end
 end
