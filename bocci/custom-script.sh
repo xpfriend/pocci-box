@@ -21,7 +21,9 @@ curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VER
 chmod +x /usr/bin/docker-compose
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get install -y git mailutils postfix
+apt-get install -y git mailutils postfix zabbix-agent
+initctl stop zabbix-agent
+mv /etc/init/zabbix-agent.conf /etc/init/zabbix-agent
 
 echo 'export POCCI_BOX_DIR="'${POCCI_BOX_DIR}'"' >/etc/profile.d/pocci.sh
 echo 'export RUNTIME_SCRIPTS_DIR="'${RUNTIME_SCRIPTS_DIR}'"' >>/etc/profile.d/pocci.sh

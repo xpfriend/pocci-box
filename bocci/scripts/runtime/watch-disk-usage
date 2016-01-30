@@ -10,4 +10,4 @@ else
   MESSAGE_LEVEL=0
 fi
 
-${RUNTIME_SCRIPTS_DIR}/notify "pocci.diskUsage" "${MESSAGE_LEVEL}" "Disk Usage: ${DISK_USAGE}%"
+${RUNTIME_SCRIPTS_DIR}/notify "pocci.disk.usage" "${MESSAGE_LEVEL}" "Disk Usage: ${DISK_USAGE}%"

@@ -106,6 +106,9 @@ shared_examples 'common' do
       describe file('/root/scripts/setup-notifier.sh') do
         it { should be_executable }
       end
+      describe file('/root/scripts/setup-ntp.sh') do
+        it { should be_executable }
+      end
       describe file('/root/scripts/setup-pocci.sh') do
         it { should be_executable }
       end
@@ -201,6 +204,9 @@ shared_examples 'common' do
         it { should be_executable }
       end
       describe file('/opt/pocci-box/scripts/notify-by-mail') do
+        it { should be_executable }
+      end
+      describe file('/opt/pocci-box/scripts/notify-by-zabbix') do
         it { should be_executable }
       end
       describe file('/opt/pocci-box/scripts/watch-disk-usage') do

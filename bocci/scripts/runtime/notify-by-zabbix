@@ -1,0 +1,4 @@
+#!/bin/bash
+set -ex
+
+zabbix_sender -c /etc/zabbix/zabbix_agentd.conf -s `hostname` -k "${MESSAGE_TYPE}" -o "${MESSAGE_LEVEL}:${MESSAGE}"

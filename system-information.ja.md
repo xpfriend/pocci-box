@@ -57,7 +57,7 @@ POCCI_DIR           | /opt/pocci-box/pocci
 KANBAN_REPOSITORY   | /opt/pocci-box/kanban/.git
 BACKUP_DIR          | /opt/pocci-box/backup
 POCCI_USER          | pocci
-NOTIFIER            | mail
+NOTIFIER            | environment.sh の notifier
 DAILY_BACKUP_NUM    | environment.sh の daily_backup_num
 BACKUP_TYPE         | environment.sh の backup_type
 BACKUP_SERVER       | environment.sh の backup_server
@@ -124,6 +124,7 @@ pocci サービスとしてOS起動時に自動起動します。
 80            | 各種CIサービスのWebインターフェース
 389           | LDAPサービス
 10022         | GitLab用 SSH ポート
+10050         | Zabbix エージェント
 50000         | Jenkins スレーブ接続用ポート
 
 
@@ -286,16 +287,27 @@ crontab を編集して定期バックアップを停止してください。
 
 システム状態通知機能
 --------------------
-**ディスク容量不足**および**Dockerプロセス停止**の際に通知を行う機能があります。
+**ディスク容量不足**、**Dockerプロセス停止**、
+**バックアップ失敗**の際に通知を行う機能があります。
 
-通知は /etc/profile.d/pocci.sh の **ADMIN_MAIL_ADDRESS**
-で指定されているメールアドレスに行われます。
-*   VM作成時に ADMIN_MAIL_ADDRESS の指定を済ませたい場合は、
-    environment.sh の中で admin_mail_address を指定してください。
+通知は environment.sh の **notifier**
+での指定方法に従って行われます。
 
-これらの機能の詳細についてはそれぞれのスクリプトをご確認ください。
-*   **ディスク容量不足:** ${RUNTIME_SCRIPTS_DIR}/watch-disk-usage
-*   **Dockerプロセス停止:** ${RUNTIME_SCRIPTS_DIR}/watch-docker-process
+### notifier=mail (あるいはnotifier指定なし) の場合
+environment.sh の **admin_mail_address** で指定された
+で指定されたメールアドレスに行われます。
+
+### notifier=zabbix の場合
+environment.sh の **zabbix_server** で指定された
+IPアドレスのZabbix Serverに対して zabbix_sender で通知を行います。
+
+通知時のキーおよびメッセージは以下の通りです。
+
+通知内容            | キー                  | メッセージ(正常時)  | メッセージ(正常時)
+------------------- | --------------------- | ------------------- | -------------------
+ディスク容量不足    | pocci.disk.usage      | 0:Disk Usage:n%     | 1:Disk Usage:n%
+Dockerプロセス停止  | pocci.docker.process  | 0:OK                | 2:Exit: ...
+バックアップ失敗    | pocci.backup          | 0:Backup OK         | 2:Backup Error: ...
 
 
 メール送信

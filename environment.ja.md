@@ -103,6 +103,25 @@ environment.sh の中で環境変数を設定することにより、
     export redmine_lang=ja
    ```
 
+エラー通知
+----------
+### notifier
+*   **設定内容:** エラー通知方法
+*   **デフォルト値:** mail
+*   **設定例:**
+    ```bash
+    export notifier=zabbix
+    ```
+
+### zabbix_server
+*   **設定内容:** Zabbix ServerのIPアドレス。
+    `notifier=zabbix` を指定した場合のみ有効。
+*   **デフォルト値:** 127.0.0.1
+*   **設定例:**
+    ```bash
+    export zabbix_server=192.168.0.10
+    ```
+
 メール送信
 ----------
 ### smtp_relayhost
