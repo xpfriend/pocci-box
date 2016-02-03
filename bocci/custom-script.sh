@@ -20,6 +20,8 @@ rm -fr /home/${SSH_USERNAME}/scripts
 curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
 chmod +x /usr/bin/docker-compose
 
+echo 'DOCKER_OPTS="'--log-opt max-size=10m --log-opt max-file=10'"' >>/etc/default/docker
+
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -y git mailutils postfix zabbix-agent
 initctl stop zabbix-agent

@@ -290,11 +290,11 @@ crontab を編集して定期バックアップを停止してください。
 **ディスク容量不足**、**Dockerプロセス停止**、
 **バックアップ失敗**の際に通知を行う機能があります。
 
-通知は environment.sh の **notifier**
+この通知は environment.sh の **notifier**
 での指定方法に従って行われます。
 
 ### notifier=mail (あるいはnotifier指定なし) の場合
-environment.sh の **admin_mail_address** で指定された
+environment.sh の **admin_mail_address**
 で指定されたメールアドレスに行われます。
 
 ### notifier=zabbix の場合
