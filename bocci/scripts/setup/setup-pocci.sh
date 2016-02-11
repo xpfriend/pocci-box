@@ -8,8 +8,7 @@ echo 'export POCCI_TEMPLATE="'${POCCI_TEMPLATE}'"' >>/etc/profile.d/pocci.sh
 sudo -u ${POCCI_USER} -E -i bash <<EOF
 set -ex
 cd ${POCCI_DIR}/bin
-echo 'y' | ./create-config ${SERVICE_TYPE}
-./up-service
+echo 'y' | ./create-service ${SERVICE_TYPE}
 EOF
 
 if [ -f /etc/init/pocci ]; then
