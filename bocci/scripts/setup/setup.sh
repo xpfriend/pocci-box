@@ -19,6 +19,7 @@ fi
 
 ./setup-timezone.sh
 ./setup-redmine_lang.sh
+./setup-https.sh
 ./setup-proxy.sh
 ./setup-notifier.sh
 ./setup-backup.sh

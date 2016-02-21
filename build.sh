@@ -6,9 +6,8 @@ BOX_VERSION=`cat VERSION`
 
 rm -fr boxcutter
 git clone https://github.com/boxcutter/ubuntu.git boxcutter
-if [ -d packer_cache ]; then
-    mkdir boxcutter/packer_cache
-    cp packer_cache/* boxcutter/packer_cache
+if [ -d Volumes ]; then
+    cp -r Volumes boxcutter
 fi
 
 cp -r bocci boxcutter

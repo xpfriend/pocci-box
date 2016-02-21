@@ -95,6 +95,14 @@ environment.sh の中で環境変数を設定することにより、
     export template="template /user_data/mytemplate"
     ```
 
+### https
+*   **設定内容:** https アクセスを行うかどうか。${POCCI_DIR}/template/setup.*.yml の https の値を変更する
+*   **デフォルト値:** false
+*   **設定例 (サービス構成タイプ指定):**
+    ```bash
+    export https=true
+   ```
+
 ### redmine_lang
 *   **設定内容:** Redmineの言語設定。${POCCI_DIR}/template/setup.redmine.yml の lang の値を変更する
 *   **デフォルト値:** en
