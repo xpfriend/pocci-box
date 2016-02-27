@@ -101,7 +101,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例 (サービス構成タイプ指定):**
     ```bash
     export https=true
-   ```
+    ```
 
 ### redmine_lang
 *   **設定内容:** Redmineの言語設定。${POCCI_DIR}/template/setup.redmine.yml の lang の値を変更する
@@ -109,7 +109,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例 (サービス構成タイプ指定):**
     ```bash
     export redmine_lang=ja
-   ```
+    ```
 
 エラー通知
 ----------
@@ -138,7 +138,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export smtp_relayhost=[smtp.example.com]:587
-   ```
+    ```
 
 ### smtp_password
 *   **設定内容:** SMTP認証情報。"ユーザーID:パスワード" の形式で指定する
@@ -146,7 +146,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export smtp_password=user:password
-   ```
+    ```
 
 ### admin_mail_address
 *   **設定内容:** システム管理者のメールアドレス。以下3箇所の設定を行う
@@ -157,7 +157,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export admin_mail_address=admin@example.com
-   ```
+    ```
 
 ### alert_mail_from
 *   **設定内容:** アラート通知メールの送信元 (From) メールアドレス
@@ -165,7 +165,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export alert_mail_from=pocci@example.com
-   ```
+    ```
 
 バックアップ
 ------------
@@ -175,7 +175,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export daily_backup_num=7
-   ```
+    ```
 
 ### daily_backup_hour
 *   **設定内容:** デイリーバックアップの起動時間(0-23)
@@ -184,7 +184,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export daily_backup_hour=1
-   ```
+    ```
 
 ### timely_backup_hour
 *   **設定内容:** 時間指定バックアップの起動時間(0-23)。カンマ区切りで複数指定可能
@@ -193,7 +193,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export timely_backup_hour=2,19
-   ```
+    ```
 
 ### backup_type
 *   **設定内容:** リモートバックアップのタイプ
@@ -201,7 +201,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export backup_type=rsync
-   ```
+    ```
 
 ### backup_server
 *   **設定内容:** バックアップ先サーバ。backup_type=rsyncを指定した場合に設定する
@@ -209,7 +209,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export backup_server=backup.example.com
-   ```
+    ```
 
 ### backup_server_user
 *   **設定内容:** バックアップ先サーバへのログインユーザー。backup_type=rsyncを指定した場合に設定する
@@ -217,7 +217,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export backup_server_user=user01
-   ```
+    ```
 
 ### backup_server_dir
 *   **設定内容:** バックアップ先サーバ上のバックアップデータ格納先ディレクトリ。backup_type=rsyncを指定した場合に設定する
@@ -225,7 +225,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export backup_server_dir=/work/backup
-   ```
+    ```
 
 フックコマンド
 --------------
@@ -235,7 +235,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export on_provisioning_finished="echo OK"
-   ```
+    ```
 
 ### on_startup_finished
 *   **設定内容:** Pocciサービス起動直後に実行するコマンド
@@ -243,7 +243,7 @@ environment.sh の中で環境変数を設定することにより、
 *   **設定例:**
     ```bash
     export on_startup_finished="echo Started"
-   ```
+    ```
 
 その他
 ------
