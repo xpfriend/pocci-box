@@ -68,7 +68,15 @@ environment.sh の中で環境変数を設定することにより、
     export service_type=redmine
     ```
 
-*   **設定例 (セットアップファイルパス指定):**
+*   **設定例 (セットアップファイル相対パス指定):**
+
+    ```bash
+    export service_type=setup.redmine.yml
+    ```
+
+    *   テンプレート格納フォルダからの相対パスを指定する
+
+*   **設定例 (セットアップファイル絶対パス指定):**
 
     ```bash
     export service_type=/user_data/setup.myservices.yml

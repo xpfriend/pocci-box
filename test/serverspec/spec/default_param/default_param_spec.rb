@@ -105,11 +105,7 @@ context 'mail' do
   context 'spool' do
     describe command('mail -H | wc -l') do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^3$/ }
-    end
-    describe command('mail -p | grep -E "^To: admin@example.com$" |wc -l') do
-      let(:disable_sudo) { true }
-      its(:stdout) { should match /^1$/ }
+      its(:stdout) { should match /^2$/ }
     end
     describe command('mail -p | grep -E "^To: pocci@localhost.localdomain$" |wc -l') do
       let(:disable_sudo) { true }
@@ -121,7 +117,7 @@ context 'mail' do
     end
     describe command('mail -p | grep -E "^From: GitLab" |wc -l') do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^3$/ }
+      its(:stdout) { should match /^2$/ }
     end
   end
 end

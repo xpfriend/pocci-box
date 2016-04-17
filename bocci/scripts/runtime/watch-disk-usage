@@ -2,7 +2,7 @@
 set -ex
 . $(dirname $0)/init-env
 
-DISK_USAGE=$(df |grep vg-root |awk '{print $5}' |sed 's/%//')
+DISK_USAGE=$(df |grep '/$' |awk '{print $5}' |sed 's/%//')
 
 if [ "${DISK_USAGE}" -ge "90" ]; then
   MESSAGE_LEVEL=1

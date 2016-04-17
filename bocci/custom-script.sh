@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-DOCKER_COMPOSE_VERSION=1.6.2
+DOCKER_COMPOSE_VERSION=1.7.0
 
 export SETUP_SCRIPTS_DIR=/root/scripts
 export POCCI_BOX_DIR=/opt/pocci-box
@@ -43,6 +43,7 @@ git clone https://github.com/xpfriend/pocci.git
 git clone https://github.com/leanlabsio/kanban.git
 cd pocci/bin
 ./build
+./lib/stop-document-server
 ./pull-all-images
 BUILD
 

@@ -26,5 +26,9 @@ fi
 echo "" >>${FILE_PATH}
 echo "${MESSAGE}" >>${FILE_PATH}
 
-cat ${FILE_PATH} | sendmail ${RECIPIENT}
+if [ -n "${ALERT_MAIL_FROM}" ]; then
+    cat ${FILE_PATH} | sendmail -f ${ALERT_MAIL_FROM} ${RECIPIENT}
+else
+    cat ${FILE_PATH} | sendmail ${RECIPIENT}
+fi
 rm -f ${FILE_PATH}

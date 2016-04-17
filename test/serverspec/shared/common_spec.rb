@@ -56,16 +56,16 @@ shared_examples 'common' do
   context 'docker images' do
     describe command("docker images |awk 'NR>1'|sort |awk '{printf \"%s \", $1 }'") do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^devries\/dnsmasq leanlabs\/backend leanlabs\/client leanlabs\/nginx leanlabs\/redis leanlabs\/wsserver nginx osixia\/openldap rabbitmq sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
+      its(:stdout) { should match /^devries\/dnsmasq leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
     end
   end
 
   context 'service type' do
     context 'docker conotainers' do
-      describe docker_container('poccis_dns_1') do
+      describe docker_container('poccib_dns_1') do
         it { should be_running }
       end
-      describe docker_container('poccis_fluentd_1') do
+      describe docker_container('poccib_fluentd_1') do
         it { should be_running }
       end
       describe docker_container('poccis_nginx_1') do
