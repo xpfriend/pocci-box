@@ -21,13 +21,15 @@ end
 
 host = ENV['TARGET_HOST']
 
-options = Net::SSH::Config.for(host)
-
-options[:user] ||= Etc.getlogin
+options = {}
+options[:host_name] = '127.0.0.1'
+options[:user] = 'pocci'
+options[:keys] = base_spec_dir.join('spec', host, '.vagrant/machines/default/virtualbox/private_key')
 
 set :host,        options[:host_name] || host
 set :ssh_options, options
 set :sudo_options, '-i'
+
 
 # Disable sudo
 # set :disable_sudo, true

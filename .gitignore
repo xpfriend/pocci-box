@@ -1,2 +1,5 @@
 boxcutter/
 Volumes/
+.vagrant/
+test-environment.sh
+/backlog/

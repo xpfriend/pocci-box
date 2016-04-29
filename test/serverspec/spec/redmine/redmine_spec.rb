@@ -1,28 +1,3 @@
-#
-# environment.sh
-# --------------------------------------------------------------------
-# export timezone=Asia/Tokyo
-# export ntp_server="ntp.nict.jp ntp.ubuntu.com"
-#
-# export smtp_relayhost=ENV['smtp_relayhost']
-# export smtp_password=ENV['smtp_password']
-# export admin_mail_address=ENV['admin_mail_address']
-# export alert_mail_from=ENV['alert_mail_from']
-#
-# export daily_backup_num=3
-# export daily_backup_hour=1
-# export timely_backup_hour=2,19
-# export backup_type=rsync
-# export backup_server=localhost
-# export backup_server_user=user01
-# export backup_server_dir=/home/user01/backup
-#
-# export service_type=redmine
-# export redmine_lang=ja
-#
-# export on_startup_finished="echo staaaaarted!!"
-# export on_provisioning_finished="echo OK OK OK..."
-# --------------------------------------------------------------------
 Encoding.default_external = Encoding::UTF_8
 require 'spec_helper'
 
@@ -97,15 +72,15 @@ end
 context 'mail' do
   context 'login shell' do
     describe command('echo $ADMIN_MAIL_ADDRESS') do
-      its(:stdout) { should match /^#{ENV['admin_mail_address']}$/ }
+      its(:stdout) { should match /^#{ENV['test_admin_mail_address']}$/ }
     end
     describe command('echo $ALERT_MAIL_FROM') do
-      its(:stdout) { should match /^#{ENV['alert_mail_from']}$/ }
+      its(:stdout) { should match /^#{ENV['test_alert_mail_from']}$/ }
     end
   end
 
   context '/etc/main.cf' do
-    describe command('grep -E "^relayhost = ' + ENV['smtp_relayhost'].gsub('[', '\[') +
+    describe command('grep -E "^relayhost = ' + ENV['test_smtp_relayhost'].gsub('[', '\[') +
                      '$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
@@ -124,8 +99,8 @@ context 'mail' do
     describe command('grep -E "^smtp_sasl_password_maps = hash:/etc/postfix/smtp_password$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^' + ENV['smtp_relayhost'].gsub('[', '\[') + ' ' +
-                    ENV['smtp_password'] + '$" /etc/postfix/smtp_password | wc -l') do
+    describe command('grep -E "^' + ENV['test_smtp_relayhost'].gsub('[', '\[') + ' ' +
+                    ENV['test_smtp_password'] + '$" /etc/postfix/smtp_password | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
     describe file('/etc/postfix/smtp_password') do
@@ -137,18 +112,18 @@ context 'mail' do
   end
 
   context '/etc/aliases' do
-    describe command('grep -E "^admin: ' + ENV['admin_mail_address'] + '$" /etc/aliases | wc -l') do
+    describe command('grep -E "^admin: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^boze: ' + ENV['admin_mail_address'] + '$" /etc/aliases | wc -l') do
+    describe command('grep -E "^boze: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^jenkinsci: ' + ENV['admin_mail_address'] + '$" /etc/aliases | wc -l') do
+    describe command('grep -E "^jenkinsci: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
   context 'template' do
-    describe command('grep -E "adminMailAddress: ' + ENV['admin_mail_address'] + '" $POCCI_DIR/template/*.yml | wc -l') do
+    describe command('grep -E "adminMailAddress: ' + ENV['test_admin_mail_address'] + '" $POCCI_DIR/template/*.yml | wc -l') do
       its(:stdout) { should match /^3$/ }
     end
   end
@@ -216,8 +191,13 @@ context 'service type' do
 end
 
 context 'hook command' do
-  context 'login shell' do
-    describe command('grep -E "^export ON_STARTUP_FINISHED=\"echo staaaaarted!!\"" /etc/profile.d/pocci.sh | wc -l') do
+  context 'on_provisioning_finished' do
+      describe file('/tmp/provisioning_finished.txt') do
+        it { should be_file }
+      end
+  end
+  context 'on_startup_finished' do
+    describe command('grep -E "^export ON_STARTUP_FINISHED=\"touch /tmp/startup_finished.txt\"" /etc/profile.d/pocci.sh | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
