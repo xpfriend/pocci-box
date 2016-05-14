@@ -119,7 +119,7 @@ shared_examples 'common' do
         it { should be_executable }
       end
       describe file('/root/scripts/setup-redmine_lang.sh') do
-        it { should be_executable }
+        it { should_not be_exist }
       end
       describe file('/root/scripts/setup-timezone.sh') do
         it { should be_executable }

@@ -11,7 +11,6 @@ export backup_server_user=user01
 export backup_server_dir=/home/user01/backup
 
 export service_type=redmine
-export redmine_lang=ja
 
 export on_startup_finished="touch /tmp/startup_finished.txt"
 export on_provisioning_finished="touch /tmp/provisioning_finished.txt"

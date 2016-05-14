@@ -124,15 +124,6 @@ environment.sh の中で環境変数を設定することにより、
     export https=true
     ```
 
-### redmine_lang
-*   **設定内容:** Redmineの言語設定。${POCCI_DIR}/template/setup.redmine.yml の lang の値を変更する
-*   **デフォルト値:** en
-*   **設定例 (サービス構成タイプ指定):**
-
-    ```bash
-    export redmine_lang=ja
-    ```
-
 エラー通知
 ----------
 ### notifier

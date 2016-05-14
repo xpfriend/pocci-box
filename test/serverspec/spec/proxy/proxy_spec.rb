@@ -103,15 +103,6 @@ context 'mail' do
   end
 end
 
-context 'redmine_lang' do
-  context 'template' do
-    describe command('grep -E "lang: en" $POCCI_DIR/template/setup.redmine.yml | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-  end
-end
-
-
 context 'service type' do
   context 'login shell' do
     describe command('echo $POCCI_TEMPLATE') do

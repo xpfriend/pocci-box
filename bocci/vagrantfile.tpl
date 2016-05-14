@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 50000, host: 50000, id: "jenkins_slave_agent"
     
     config.vm.provider :virtualbox do |v, override|
-        v.customize ["modifyvm", :id, "--memory", 4096]
+        v.customize ["modifyvm", :id, "--memory", 5120]
         v.customize ["modifyvm", :id, "--cpus", 2]
     end
 

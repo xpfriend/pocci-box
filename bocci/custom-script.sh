@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-DOCKER_COMPOSE_VERSION=1.7.0
+DOCKER_COMPOSE_VERSION=1.7.1
 
 export SETUP_SCRIPTS_DIR=/root/scripts
 export POCCI_BOX_DIR=/opt/pocci-box

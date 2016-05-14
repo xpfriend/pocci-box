@@ -25,6 +25,7 @@ options = {}
 options[:host_name] = '127.0.0.1'
 options[:user] = 'pocci'
 options[:keys] = base_spec_dir.join('spec', host, '.vagrant/machines/default/virtualbox/private_key')
+options[:paranoid] = false
 
 set :host,        options[:host_name] || host
 set :ssh_options, options
