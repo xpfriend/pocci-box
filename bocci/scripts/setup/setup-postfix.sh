@@ -46,7 +46,7 @@ else
 fi
 echo "admin: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
 echo "boze: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
-echo "jenkinsci: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
+echo "jenkins-ci: ${ADMIN_MAIL_ADDRESS}" >>${ALIASES}
 newaliases
 
 ALERT_MAIL_FROM=${alert_mail_from}
@@ -54,10 +54,3 @@ if [ -z "${ALERT_MAIL_FROM}" ]; then
     ALERT_MAIL_FROM=${ADMIN_MAIL_ADDRESS}
 fi
 echo 'export ALERT_MAIL_FROM="'${ALERT_MAIL_FROM}'"' >>/etc/profile.d/pocci.sh
-
-sudo -u ${POCCI_USER} -E /bin/bash <<'EOF'
-set -ex
-for i in ${POCCI_DIR}/template/*.yml; do
-    sed -E "s|adminMailAddress:.*$|adminMailAddress: ${ADMIN_MAIL_ADDRESS}|g" -i $i
-done
-EOF

@@ -35,10 +35,19 @@ environment.sh の中で環境変数を設定することにより、
 
 システム環境
 ------------
+### domain
+*   **設定内容:** ドメイン
+*   **デフォルト値:** pocci.test
+*   **設定例:**
+
+    ```bash
+    export domain=example.com
+    ```
+
 ### timezone
 *   **設定内容:** 以下2箇所のタイムゾーン設定を変更する  
     *   システムのタイムゾーン
-    *   ${POCCI_DIR}/template 内セットアップファイルのタイムゾーン(pocci.environment.TZ)
+    *   環境変数 `TZ`
 *   **デフォルト値:** Etc/UTC
 *   **設定例:**
 
@@ -116,7 +125,7 @@ environment.sh の中で環境変数を設定することにより、
     ```
 
 ### https
-*   **設定内容:** https アクセスを行うかどうか。${POCCI_DIR}/template/setup.*.yml の https の値を変更する
+*   **設定内容:** https アクセスを行うかどうか。
 *   **デフォルト値:** false
 *   **設定例 (サービス構成タイプ指定):**
 
@@ -167,7 +176,7 @@ environment.sh の中で環境変数を設定することにより、
 
 ### admin_mail_address
 *   **設定内容:** システム管理者のメールアドレス。以下3箇所の設定を行う
-    *   ${POCCI_DIR}/template 内セットアップファイルの adminMailAddress 値
+    *   pocci コンテナから参照される環境変数 ADMIN_MAIL_ADDRESS
     *   アラート通知メールの送信先
     *   ローカルホスト (localhost, localhost.localdomain, example.com, example.net) 宛てメール
 *   **デフォルト値:** pocci@localhost.localdomain

@@ -5,7 +5,7 @@ BASE_DIR=$(cd $(dirname $0); pwd)
 
 test_box() {
   echo ""
-  echo ""
+  echo "--------------------------------"
   echo "$1"
   cd ${BASE_DIR}/serverspec/spec/$1
   if [ -f ./test-environment.sh ]; then
@@ -21,8 +21,11 @@ test_box() {
 }
 
 
-test_box default_param
-test_box redmine
-test_box jenkins
-test_box proxy
-test_box service_type_by_url
+START=1
+if [ -n "$1" ]; then
+    START=$1
+fi
+
+for ((i=${START};i<=7;i++)); do
+    test_box scenario$i
+done

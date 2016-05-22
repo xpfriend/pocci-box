@@ -1,6 +1,0 @@
-pocci:
-  domain: pocci.test
-  services:
-    - jenkins
-  environment:
-    TZ: Asia/Tokyo

@@ -35,7 +35,7 @@ echo 'export KANBAN_REPOSITORY="'${POCCI_BOX_DIR}/kanban/.git'"' >>/etc/profile.
 sudo -u ${SSH_USERNAME} -E -i bash <<BUILD
 set -ex
 
-git config --global user.email "`whoami`@localhost.localdomain"
+git config --global user.email "${SSH_USERNAME}@localhost.localdomain"
 git config --global user.name "Pocci"
 
 cd ${POCCI_BOX_DIR}

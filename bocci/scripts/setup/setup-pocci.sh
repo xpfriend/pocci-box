@@ -3,7 +3,9 @@ set -ex
 
 export SERVICE_TYPE="${service_type:-default}"
 export POCCI_TEMPLATE="${template:-template}"
+POCCI_DOMAIN_NAME="${domain:-pocci.test}"
 echo 'export POCCI_TEMPLATE="'${POCCI_TEMPLATE}'"' >>/etc/profile.d/pocci.sh
+echo 'export POCCI_DOMAIN_NAME="'${POCCI_DOMAIN_NAME}'"' >>/etc/profile.d/pocci.sh
 
 sudo -u ${POCCI_USER} -E -i bash <<EOF
 set -ex
