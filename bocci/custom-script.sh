@@ -23,7 +23,7 @@ chmod +x /usr/bin/docker-compose
 echo 'DOCKER_OPTS="'--log-opt max-size=10m --log-opt max-file=10'"' >>/etc/default/docker
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get install -y atsar git mailutils postfix zabbix-agent
+apt-get install -y atsar git zabbix-agent
 initctl stop zabbix-agent
 mv /etc/init/zabbix-agent.conf /etc/init/zabbix-agent
 

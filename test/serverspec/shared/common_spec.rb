@@ -151,9 +151,14 @@ shared_examples 'common' do
         its(:stdout) { should match /^\/opt\/pocci-box\/kanban\/.git$/ }
       end
     end
-    %w{atsar git mailutils postfix zabbix-agent docker-engine}.each do |pkg|
+    %w{atsar git zabbix-agent docker-engine}.each do |pkg|
       describe package(pkg) do
         it { should be_installed }
+      end
+    end
+    %w{postfix}.each do |pkg|
+      describe package(pkg) do
+        it { should_not be_installed }
       end
     end
     describe command('docker-compose --version') do
@@ -168,7 +173,7 @@ shared_examples 'common' do
     end
     describe command("docker images |awk 'NR>1'|sort |awk '{printf \"%s \", $1 }'") do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^devries\/dnsmasq leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
+      its(:stdout) { should match /^devries\/dnsmasq leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
     end
   end
 
@@ -244,15 +249,6 @@ shared_examples 'common' do
       its(:content) { should match /^stop on stopping docker$/ }
       its(:content) { should match /^kill timeout 120$/ }
       its(:content) { should match /^exec sudo -u pocci -E -i \/bin\/bash \/opt\/pocci-box\/scripts\/start$/ }
-    end
-  end
-
-  context 'setup-postfix.sh' do
-    describe command('grep -E "^mynetworks.+ 172.17.0.0/16$" /etc/postfix/main.cf | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-    describe command('grep -E "^mydestination.+ example.com, example.net$" /etc/postfix/main.cf | wc -l') do
-      its(:stdout) { should match /^1$/ }
     end
   end
 

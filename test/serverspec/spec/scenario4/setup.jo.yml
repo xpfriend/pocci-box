@@ -1,3 +1,4 @@
 pocci:
   services:
     - jenkins
+    - smtp

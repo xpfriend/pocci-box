@@ -122,6 +122,9 @@ context 'setup-pocci.sh' do
     describe docker_container('poccis_kanban_1') do
       it { should be_running }
     end
+    describe docker_container('poccis_smtp_1') do
+      it { should be_running }
+    end
     describe command("docker ps -a |grep jenkins |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
@@ -138,6 +141,8 @@ end
 
 context 'setup-postfix.sh' do
   describe file('/etc/profile.d/pocci.sh') do
+    its(:content) { should_not match /^export SMTP_RELAYHOST=/ }
+    its(:content) { should_not match /^export SMTP_PASSWORD=/ }
     its(:content) { should match /^export ADMIN_MAIL_ADDRESS="pocci@localhost.localdomain"$/ }
     its(:content) { should match /^export ALERT_MAIL_FROM="pocci@localhost.localdomain"$/ }
   end
@@ -153,58 +158,51 @@ context 'setup-postfix.sh' do
     its(:content) { should match /^ADMIN_MAIL_ADDRESS=pocci@localhost.localdomain$/ }
   end
   context '/etc/postfix/main.cf' do
-    describe command('grep -E "^relayhost = .+$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^relayhost = .+$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
-    describe command('grep -E "^smtp_tls_security_level" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_tls_security_level" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
-    describe command('grep -E "^smtp_tls_CAfile" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_tls_CAfile" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
-    describe command('grep -E "^smtp_sasl_auth_enable" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_auth_enable" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
-    describe command('grep -E "^smtp_sasl_security_options" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_security_options" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
-    describe command('grep -E "^smtp_sasl_password_maps" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_password_maps" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^0$/ }
     end
   end
   context '/etc/postfix/smtp_password' do
-    describe file('/etc/postfix/smtp_password') do
-      it { should_not be_exist }
+    describe command('docker exec poccis_smtp_1 ls /etc/postfix/smtp_password | wc -l') do
+      its(:stdout) { should match /^0$/ }
     end
-    describe file('/etc/postfix/smtp_password.db') do
-      it { should_not be_exist }
+    describe command('docker exec poccis_smtp_1 ls /etc/postfix/smtp_password.db | wc -l') do
+      its(:stdout) { should match /^0$/ }
     end
   end
   context '/etc/aliases' do
-    describe command('grep -E "^admin: pocci@localhost.localdomain$" /etc/aliases | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^pocci:root" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^boze: pocci@localhost.localdomain$" /etc/aliases | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-    describe command('grep -E "^jenkins-ci: pocci@localhost.localdomain$" /etc/aliases | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^boze:root" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
   context 'spool' do
-    describe command('mail -H | wc -l') do
-      let(:disable_sudo) { true }
-      its(:stdout) { should match /^2$/ }
-    end
-    describe command('mail -p | grep -E "^To: pocci@localhost.localdomain$" |wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^To: pocci@localhost.localdomain$" /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
       its(:stdout) { should match /^1$/ }
     end
-    describe command('mail -p | grep -E "^To: boze@localhost.localdomain$" |wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^To: boze@localhost.localdomain$" /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
       its(:stdout) { should match /^1$/ }
     end
-    describe command('mail -p | grep -E "^From: GitLab" |wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^From: GitLab"  /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
       its(:stdout) { should match /^2$/ }
     end

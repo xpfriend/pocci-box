@@ -101,6 +101,9 @@ context 'setup-pocci.sh' do
     describe docker_container('poccis_redmine_1') do
       it { should be_running }
     end
+    describe docker_container('poccis_smtp_1') do
+      it { should be_running }
+    end
     describe command("docker ps -a |grep kanban |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
@@ -114,10 +117,18 @@ end
 
 context 'setup-postfix.sh' do
   describe file('/etc/profile.d/pocci.sh') do
+    its(:content) { should match /^export SMTP_RELAYHOST="#{ENV['test_smtp_relayhost'].gsub('[', '\[')}"$/ }
+    its(:content) { should match /^export SMTP_PASSWORD="#{ENV['test_smtp_password']}"$/ }
     its(:content) { should match /^export ADMIN_MAIL_ADDRESS="#{ENV['test_admin_mail_address']}"$/ }
     its(:content) { should match /^export ALERT_MAIL_FROM="#{ENV['test_alert_mail_from']}"$/ }
   end
   context 'environment' do
+    describe command('echo $SMTP_RELAYHOST') do
+      its(:stdout) { should match /^#{ENV['test_smtp_relayhost'].gsub('[', '\[')}$/ }
+    end
+    describe command('echo $SMTP_PASSWORD') do
+      its(:stdout) { should match /^#{ENV['test_smtp_password']}$/ }
+    end
     describe command('echo $ADMIN_MAIL_ADDRESS') do
       its(:stdout) { should match /^#{ENV['test_admin_mail_address']}$/ }
     end
@@ -126,56 +137,55 @@ context 'setup-postfix.sh' do
     end
   end
   describe file('/opt/pocci-box/pocci/config/.env') do
+    its(:content) { should match /^SMTP_RELAYHOST=#{ENV['test_smtp_relayhost'].gsub('[', '\[')}$/ }
+    its(:content) { should match /^SMTP_PASSWORD=#{ENV['test_smtp_password']}$/ }
     its(:content) { should match /^ADMIN_MAIL_ADDRESS=#{ENV['test_admin_mail_address']}$/ }
   end
   context '/etc/postfix/main.cf' do
-    describe command('grep -E "^relayhost = ' + ENV['test_smtp_relayhost'].gsub('[', '\[') +
+    describe command('docker exec poccis_smtp_1 grep -E "^relayhost = ' + ENV['test_smtp_relayhost'].gsub('[', '\[') +
                      '$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^smtp_tls_security_level = may$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_tls_security_level = may$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^smtp_sasl_auth_enable = yes$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_auth_enable = yes$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^smtp_sasl_security_options = noanonymous$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_security_options = noanonymous$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^smtp_sasl_password_maps = hash:/etc/postfix/smtp_password$" /etc/postfix/main.cf | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^smtp_sasl_password_maps = hash:/etc/postfix/smtp_password$" /etc/postfix/main.cf | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
   context '/etc/postfix/smtp_password' do
-    describe file('/etc/postfix/smtp_password') do
-      it { should be_file }
+    describe command('docker exec poccis_smtp_1 ls /etc/postfix/smtp_password | wc -l') do
+      its(:stdout) { should match /^1$/ }
     end
-    describe file('/etc/postfix/smtp_password.db') do
-      it { should be_file }
+    describe command('docker exec poccis_smtp_1 ls /etc/postfix/smtp_password.db | wc -l') do
+      its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^' + ENV['test_smtp_relayhost'].gsub('[', '\[') + ' ' +
+    describe command('docker exec poccis_smtp_1 grep -E "^' + ENV['test_smtp_relayhost'].gsub('[', '\[') + ' ' +
                     ENV['test_smtp_password'] + '$" /etc/postfix/smtp_password | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
   context '/etc/aliases' do
-    describe command('grep -E "^admin: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^boze:' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
-    describe command('grep -E "^boze: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-    describe command('grep -E "^jenkins-ci: ' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^jenkins-ci:' + ENV['test_admin_mail_address'] + '$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
   context 'spool' do
-    describe command('mail -H') do
+    describe command('docker exec poccis_smtp_1 mail') do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^No mail for pocci$/ }
+      its(:stderr) { should match /^No mail for root$/ }
     end
   end
 end

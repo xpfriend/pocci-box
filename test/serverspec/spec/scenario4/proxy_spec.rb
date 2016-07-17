@@ -37,6 +37,9 @@ context 'setup-pocci.sh' do
     describe docker_container('poccis_jenkins_1') do
       it { should be_running }
     end
+    describe docker_container('poccis_smtp_1') do
+      it { should be_running }
+    end
     describe command("docker ps -a |grep ldap |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
@@ -83,13 +86,7 @@ context 'setup-postfix.sh' do
     end
   end
   context '/etc/aliases' do
-    describe command('grep -E "^admin: pocci@example.com$" /etc/aliases | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-    describe command('grep -E "^boze: pocci@example.com$" /etc/aliases | wc -l') do
-      its(:stdout) { should match /^1$/ }
-    end
-    describe command('grep -E "^jenkins-ci: pocci@example.com$" /etc/aliases | wc -l') do
+    describe command('docker exec poccis_smtp_1 grep -E "^pocci:root$" /etc/aliases | wc -l') do
       its(:stdout) { should match /^1$/ }
     end
   end
