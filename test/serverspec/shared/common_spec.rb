@@ -173,7 +173,7 @@ shared_examples 'common' do
     end
     describe command("docker images |awk 'NR>1'|sort |awk '{printf \"%s \", $1 }'") do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^devries\/dnsmasq leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
+      its(:stdout) { should match /^devries\/dnsmasq gitlab\/gitlab-runner leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
     end
   end
 

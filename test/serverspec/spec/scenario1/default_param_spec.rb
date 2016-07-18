@@ -113,10 +113,7 @@ context 'setup-pocci.sh' do
     describe docker_container('poccis_sonar_1') do
       it { should be_running }
     end
-    describe docker_container('poccin_nodejs_1') do
-      it { should be_running }
-    end
-    describe docker_container('poccin_java_1') do
+    describe docker_container('poccin_docker_1') do
       it { should be_running }
     end
     describe docker_container('poccis_kanban_1') do
@@ -129,6 +126,12 @@ context 'setup-pocci.sh' do
       its(:stdout) { should match /^0$/ }
     end
     describe command("docker ps -a |grep redmine |wc -l") do
+      its(:stdout) { should match /^0$/ }
+    end
+    describe command("docker ps -a |grep poccin_nodejs |wc -l") do
+      its(:stdout) { should match /^0$/ }
+    end
+    describe command("docker ps -a |grep poccin_java |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
   end
