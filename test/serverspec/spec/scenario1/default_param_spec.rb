@@ -217,6 +217,19 @@ context 'setup-mail.sh' do
       its(:stdout) { should match /^2$/ }
     end
   end
+  context 'notify' do
+    describe command('${RUNTIME_SCRIPTS_DIR}/notify "scenario1" "1" "test"') do
+      its(:exit_status) { should eq 0 }
+    end
+    describe command('docker exec poccis_smtp_1 sh -c "echo q | mail" | grep -e "\[pocci\] Warning" | wc -l') do
+      let(:disable_sudo) { true }
+      its(:stdout) { should match /^1$/ }
+    end
+    describe command('docker exec poccis_smtp_1 sh -c "echo d 3 | mail"') do
+      let(:disable_sudo) { true }
+      its(:exit_status) { should eq 0 }
+    end
+  end
 end
 
 context 'setup-proxy.sh' do

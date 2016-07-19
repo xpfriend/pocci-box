@@ -195,6 +195,14 @@ context 'setup-mail.sh' do
       its(:stderr) { should match /^No mail for root$/ }
     end
   end
+  context 'notify' do
+    describe command('${RUNTIME_SCRIPTS_DIR}/notify "scenario2" "1" "test"') do
+      its(:exit_status) { should eq 0 }
+    end
+    describe command('tail -1 /var/log/mail.log | grep "Sent mail for" | wc -l') do
+      its(:stdout) { should match /^1$/ }
+    end
+  end
 end
 
 context 'setup-timezone.sh' do
