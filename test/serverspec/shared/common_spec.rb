@@ -56,7 +56,7 @@ shared_examples 'common' do
       describe file('/root/scripts/setup-pocci.sh') do
         it { should be_executable }
       end
-      describe file('/root/scripts/setup-postfix.sh') do
+      describe file('/root/scripts/setup-mail.sh') do
         it { should be_executable }
       end
       describe file('/root/scripts/setup-proxy.sh') do
@@ -151,7 +151,7 @@ shared_examples 'common' do
         its(:stdout) { should match /^\/opt\/pocci-box\/kanban\/.git$/ }
       end
     end
-    %w{atsar git zabbix-agent docker-engine}.each do |pkg|
+    %w{atsar git mailutils ssmtp zabbix-agent docker-engine}.each do |pkg|
       describe package(pkg) do
         it { should be_installed }
       end
@@ -159,6 +159,14 @@ shared_examples 'common' do
     %w{postfix}.each do |pkg|
       describe package(pkg) do
         it { should_not be_installed }
+      end
+    end
+    context 'mail commands' do
+      describe file('/usr/bin/mail') do
+        it { should be_executable }
+      end
+      describe file('/usr/sbin/sendmail') do
+        it { should be_executable }
       end
     end
     describe command('docker-compose --version') do
@@ -220,6 +228,12 @@ shared_examples 'common' do
     describe cron do
       it { should have_entry('11 * * * * /opt/pocci-box/scripts/watch-docker-process').with_user('pocci') }
       it { should have_entry('12 * * * * /opt/pocci-box/scripts/watch-disk-usage').with_user('pocci') }
+    end
+  end
+
+  context 'setup-mail.sh' do
+    describe file('/etc/ssmtp/ssmtp.conf') do
+      its(:content) { should match /^FromLineOverride=YES$/ }
     end
   end
 

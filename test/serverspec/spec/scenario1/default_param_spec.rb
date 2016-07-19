@@ -142,7 +142,7 @@ context 'setup-pocci.sh' do
   end
 end
 
-context 'setup-postfix.sh' do
+context 'setup-mail.sh' do
   describe file('/etc/profile.d/pocci.sh') do
     its(:content) { should_not match /^export SMTP_RELAYHOST=/ }
     its(:content) { should_not match /^export SMTP_PASSWORD=/ }
@@ -156,6 +156,13 @@ context 'setup-postfix.sh' do
     describe command('echo $ALERT_MAIL_FROM') do
       its(:stdout) { should match /^pocci@localhost.localdomain$/ }
     end
+  end
+  describe file('/etc/ssmtp/ssmtp.conf') do
+    its(:content) { should match /^mailhub=localhost$/ }
+    its(:content) { should_not match /^AuthUser=/ }
+    its(:content) { should_not match /^AuthPass=/ }
+    its(:content) { should_not match /^UseTLS=YES$/ }
+    its(:content) { should_not match /^UseSTARTTLS=YES$/ }
   end
   describe file('/opt/pocci-box/pocci/config/.env') do
     its(:content) { should match /^ADMIN_MAIL_ADDRESS=pocci@localhost.localdomain$/ }

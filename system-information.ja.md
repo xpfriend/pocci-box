@@ -308,13 +308,15 @@ Dockerプロセス停止  | pocci.docker.process  | 0:OK                | 2:Exit
 
 メール送信
 ----------
-**Postfix**によるメール送信機能を備えています。
+**sSMTP**によるメール送信機能を備えています。
 
-プロビジョニング処理では、Postfixに対して以下の設定を行っています。
-*   Dockerデフォルトネットワーク (172.17.0.0/16) からの通信を許可
-*   example.com および example.net あてのメールを転送せずに自サーバ宛てとして処理する
-*   environment.sh の smtp_relayhost に従ってメール転送先SMTPサーバを設定
+プロビジョニング処理では、sSMTP (`/etc/ssmtp/ssmtp.conf`) に対して以下の設定を行っています。
+*   environment.sh の smtp_relayhost に従ってメール転送先SMTPサーバを設定。
+    smtp_relayhost が指定されていない場合は localhost 上のSMTPサーバ (smtpサービス) を利用。
 *   environment.sh の smtp_password が指定されている場合 SMTP 認証設定を追加
-*   admin, boze, jenkinsci 宛てのメールを ${ADMIN_MAIL_ADDRESS} に転送する設定を追加
 
-上記設定の詳細内容は /root/scripts/setup-postfix.sh で確認できます。
+上記設定の詳細内容は `/root/scripts/setup-mail.sh` で確認できます。
+
+また、environment.sh の smtp_relayhost, smtp_password の設定により、
+それぞれ環境変数 `SMTP_RELAYHOST`, `SMTP_PASSWORD` が設定されます。
+これにより、Pocciのsmtpサービス(Postfix)に関しても、メール転送先およびSMTP認証の設定が行われます。

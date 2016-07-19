@@ -115,7 +115,7 @@ context 'setup-pocci.sh' do
   end
 end
 
-context 'setup-postfix.sh' do
+context 'setup-mail.sh' do
   describe file('/etc/profile.d/pocci.sh') do
     its(:content) { should match /^export SMTP_RELAYHOST="#{ENV['test_smtp_relayhost'].gsub('[', '\[')}"$/ }
     its(:content) { should match /^export SMTP_PASSWORD="#{ENV['test_smtp_password']}"$/ }
@@ -135,6 +135,13 @@ context 'setup-postfix.sh' do
     describe command('echo $ALERT_MAIL_FROM') do
       its(:stdout) { should match /^#{ENV['test_alert_mail_from']}$/ }
     end
+  end
+  describe file('/etc/ssmtp/ssmtp.conf') do
+    its(:content) { should match /^mailhub=#{ENV['test_smtp_relayhost'].gsub('[', '').gsub(']', '')}$/ }
+    its(:content) { should match /^AuthUser=#{ENV['test_smtp_password'].split(':')[0]}$/ }
+    its(:content) { should match /^AuthPass=#{ENV['test_smtp_password'].split(':')[1]}$/ }
+    its(:content) { should match /^UseTLS=YES$/ }
+    its(:content) { should match /^UseSTARTTLS=YES$/ }
   end
   describe file('/opt/pocci-box/pocci/config/.env') do
     its(:content) { should match /^SMTP_RELAYHOST=#{ENV['test_smtp_relayhost'].gsub('[', '\[')}$/ }

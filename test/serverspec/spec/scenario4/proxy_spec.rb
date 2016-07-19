@@ -72,7 +72,7 @@ context 'setup-pocci.sh' do
   end
 end
 
-context 'setup-postfix.sh' do
+context 'setup-mail.sh' do
   describe file('/etc/profile.d/pocci.sh') do
     its(:content) { should match /^export ADMIN_MAIL_ADDRESS="pocci@example.com"$/ }
     its(:content) { should match /^export ALERT_MAIL_FROM="pocci@example.com"$/ }

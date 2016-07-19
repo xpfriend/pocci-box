@@ -157,7 +157,7 @@ environment.sh の中で環境変数を設定することにより、
 メール送信
 ----------
 ### smtp_relayhost
-*   **設定内容:** メールを転送するSMTPサーバ。/etc/postfix/main.cf の **relayhost** 設定
+    *   **設定内容:** メールを転送するSMTPサーバ。
 *   **デフォルト値:** なし
 *   **設定例:**
 

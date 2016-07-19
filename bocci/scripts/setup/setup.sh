@@ -22,7 +22,7 @@ fi
 ./setup-proxy.sh
 ./setup-notifier.sh
 ./setup-backup.sh
-./setup-postfix.sh
+./setup-mail.sh
 ./setup-pocci.sh
 ./setup-crontab.sh
 ./setup-ntp.sh
