@@ -203,6 +203,11 @@ context 'setup-mail.sh' do
       its(:stdout) { should match /^1$/ }
     end
   end
+  context 'log' do
+    describe command('docker exec poccis_smtp_1 cat /var/log/maillog | grep reject | wc -l') do
+      its(:stdout) { should match /^0$/ }
+    end
+  end
 end
 
 context 'setup-timezone.sh' do
