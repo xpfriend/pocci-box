@@ -206,7 +206,7 @@ context 'setup-mail.sh' do
   context 'spool' do
     describe command('docker exec poccis_smtp_1 grep -E "^To: pocci@localhost.localdomain$" /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^1$/ }
+      its(:stdout) { should match /^2$/ }
     end
     describe command('docker exec poccis_smtp_1 grep -E "^To: boze@localhost.localdomain$" /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
@@ -214,7 +214,7 @@ context 'setup-mail.sh' do
     end
     describe command('docker exec poccis_smtp_1 grep -E "^From: GitLab"  /var/mail/root |wc -l') do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^2$/ }
+      its(:stdout) { should match /^3$/ }
     end
   end
   context 'notify' do
@@ -225,7 +225,7 @@ context 'setup-mail.sh' do
       let(:disable_sudo) { true }
       its(:stdout) { should match /^1$/ }
     end
-    describe command('docker exec poccis_smtp_1 sh -c "echo d 3 | mail"') do
+    describe command('docker exec poccis_smtp_1 sh -c "echo d 4 | mail"') do
       let(:disable_sudo) { true }
       its(:exit_status) { should eq 0 }
     end
