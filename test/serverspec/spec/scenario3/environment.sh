@@ -5,4 +5,4 @@ service tinyproxy restart
 
 export http_proxy=http://172.17.0.1:8888
 
-export service_type=jenkins
+export service_type=taiga

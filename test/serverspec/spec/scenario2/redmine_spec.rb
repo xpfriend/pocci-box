@@ -104,7 +104,7 @@ context 'setup-pocci.sh' do
     describe docker_container('poccis_smtp_1') do
       it { should be_running }
     end
-    describe command("docker ps -a |grep kanban |wc -l") do
+    describe command("docker ps -a |grep taiga |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
   end

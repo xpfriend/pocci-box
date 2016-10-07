@@ -42,7 +42,6 @@ echo 'DOCKER_OPTS="'--log-opt max-size=10m --log-opt max-file=10'"' >>/etc/defau
 echo 'export POCCI_BOX_DIR="'${POCCI_BOX_DIR}'"' >/etc/profile.d/pocci.sh
 echo 'export RUNTIME_SCRIPTS_DIR="'${RUNTIME_SCRIPTS_DIR}'"' >>/etc/profile.d/pocci.sh
 echo 'export POCCI_DIR="'${POCCI_BOX_DIR}/pocci'"' >>/etc/profile.d/pocci.sh
-echo 'export KANBAN_REPOSITORY="'${POCCI_BOX_DIR}/kanban/.git'"' >>/etc/profile.d/pocci.sh
 
 sudo -u ${SSH_USERNAME} -E -i bash <<BUILD
 set -ex
@@ -52,7 +51,6 @@ git config --global user.name "Pocci"
 
 cd ${POCCI_BOX_DIR}
 git clone https://github.com/xpfriend/pocci.git
-git clone https://github.com/leanlabsio/kanban.git
 cd pocci/bin
 ./build
 ./lib/stop-document-server

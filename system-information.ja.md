@@ -54,7 +54,6 @@ OS
 POCCI_BOX_DIR       | /opt/pocci-box
 RUNTIME_SCRIPTS_DIR | /opt/pocci-box/scripts
 POCCI_DIR           | /opt/pocci-box/pocci
-KANBAN_REPOSITORY   | /opt/pocci-box/kanban/.git
 BACKUP_DIR          | /opt/pocci-box/backup
 POCCI_USER          | pocci
 NOTIFIER            | environment.sh の notifier

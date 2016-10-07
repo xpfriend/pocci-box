@@ -58,7 +58,7 @@ context 'setup-pocci.sh' do
     describe command("docker ps -a |grep java |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
-    describe command("docker ps -a |grep kanban |wc -l") do
+    describe command("docker ps -a |grep taiga |wc -l") do
       its(:stdout) { should match /^0$/ }
     end
     describe command("docker ps -a |grep redmine |wc -l") do

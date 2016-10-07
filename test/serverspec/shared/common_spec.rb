@@ -69,13 +69,6 @@ shared_examples 'common' do
         it { should be_executable }
       end
     end
-    %w{/opt/pocci-box /opt/pocci-box/scripts /opt/pocci-box/pocci /opt/pocci-box/kanban/.git}.each do |dir|
-      describe file(dir) do
-        it { should be_directory }
-        it { should be_owned_by('pocci') }
-        it { should be_grouped_into('pocci') }
-      end
-    end
     describe file('/home/pocci/scripts') do
       it { should_not be_exist }
     end
@@ -134,7 +127,6 @@ shared_examples 'common' do
         its(:content) { should match /^export POCCI_BOX_DIR="\/opt\/pocci-box"$/ }
         its(:content) { should match /^export RUNTIME_SCRIPTS_DIR="\/opt\/pocci-box\/scripts"$/ }
         its(:content) { should match /^export POCCI_DIR="\/opt\/pocci-box\/pocci"$/ }
-        its(:content) { should match /^export KANBAN_REPOSITORY="\/opt\/pocci-box\/kanban\/.git"$/ }
       end
     end
     context 'environment' do
@@ -146,9 +138,6 @@ shared_examples 'common' do
       end
       describe command('echo $POCCI_DIR') do
         its(:stdout) { should match /^\/opt\/pocci-box\/pocci$/ }
-      end
-      describe command('echo $KANBAN_REPOSITORY') do
-        its(:stdout) { should match /^\/opt\/pocci-box\/kanban\/.git$/ }
       end
     end
     %w{atsar git mailutils ssmtp zabbix-agent docker-engine}.each do |pkg|
@@ -181,7 +170,7 @@ shared_examples 'common' do
     end
     describe command("docker images |awk 'NR>1'|sort |awk '{printf \"%s \", $1 }'") do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^devries\/dnsmasq gitlab\/gitlab-runner leanlabs\/kanban leanlabs\/nginx leanlabs\/redis nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
+      its(:stdout) { should match /^devries\/dnsmasq gitlab\/gitlab-runner nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/taiga-back xpfriend\/taiga-front xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
     end
   end
 
