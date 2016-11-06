@@ -66,7 +66,7 @@ context 'setup-pocci.sh' do
     end
   end
   context 'setup.yml' do
-    describe command('diff /user_data/setup.jo.yml $POCCI_DIR/config/setup.yml |wc -l') do
+    describe command('sed -e "s/\"/\'/g" /user_data/setup.jo.yml > /tmp/setup.yml && diff -bB /tmp/setup.yml $POCCI_DIR/config/setup.yml |wc -l') do
       its(:stdout) { should match /^0$/ }
     end
   end

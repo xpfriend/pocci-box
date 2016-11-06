@@ -159,7 +159,7 @@ shared_examples 'common' do
       end
     end
     describe command('docker-compose --version') do
-      its(:stdout) { should match /version 1\.8\.0/ }
+      its(:stdout) { should match /version 1\.8\.1/ }
     end
     describe file('/etc/default/docker') do
       its(:content) { should match /^DOCKER_OPTS="--log-opt max-size=10m --log-opt max-file=10"$/ }
@@ -170,7 +170,7 @@ shared_examples 'common' do
     end
     describe command("docker images |awk 'NR>1'|sort |awk '{printf \"%s \", $1 }'") do
       let(:disable_sudo) { true }
-      its(:stdout) { should match /^devries\/dnsmasq gitlab\/gitlab-runner nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/taiga-back xpfriend\/taiga-front xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
+      its(:stdout) { should match /^devries\/dnsmasq gitlab\/gitlab-runner nginx osixia\/openldap sameersbn\/gitlab sameersbn\/postgresql sameersbn\/redis sameersbn\/redmine sonatype\/nexus3 xpfriend\/fluentd xpfriend\/jenkins xpfriend\/pocci-account-center xpfriend\/postfix xpfriend\/sonarqube xpfriend\/taiga-back xpfriend\/taiga-front xpfriend\/workspace-base xpfriend\/workspace-java xpfriend\/workspace-nodejs $/ }
     end
   end
 
