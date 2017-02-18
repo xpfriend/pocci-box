@@ -159,7 +159,7 @@ shared_examples 'common' do
       end
     end
     describe command('docker-compose --version') do
-      its(:stdout) { should match /version 1\.8\.1/ }
+      its(:stdout) { should match /version 1\.11\.1/ }
     end
     describe file('/etc/default/docker') do
       its(:content) { should match /^DOCKER_OPTS="--log-opt max-size=10m --log-opt max-file=10"$/ }
