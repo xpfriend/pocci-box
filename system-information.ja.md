@@ -2,7 +2,7 @@
 ============
 OS
 --
-*   **Ubuntu 14.04.3 LTS**  
+*   **Ubuntu 14**  
     [Boxcutter](https://github.com/boxcutter/ubuntu) を用いて作成しています。
 
 ユーザーアカウント

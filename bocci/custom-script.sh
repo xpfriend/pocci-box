@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-DOCKER_COMPOSE_VERSION=1.11.1
+DOCKER_COMPOSE_VERSION=1.11.2
 
 export SETUP_SCRIPTS_DIR=/root/scripts
 export POCCI_BOX_DIR=/opt/pocci-box
@@ -18,16 +18,22 @@ chown -R ${SSH_USERNAME}:${SSH_USERNAME} ${POCCI_BOX_DIR}
 rm -fr /home/${SSH_USERNAME}/scripts
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get install -y apt-transport-https atsar ca-certificates git mailutils ssmtp zabbix-agent
+apt-get install -y apt-transport-https atsar ca-certificates git \
+        linux-image-extra-$(uname -r) linux-image-extra-virtual mailutils \
+        software-properties-common ssmtp zabbix-agent
 initctl stop zabbix-agent
 mv /etc/init/zabbix-agent.conf /etc/init/zabbix-agent
 
 groupadd docker
 usermod -aG docker ${SSH_USERNAME}
-apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
 apt-get update
-apt-get install -y docker-engine
+apt-get install -y docker-ce
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/' /etc/default/grub
 update-grub
 
